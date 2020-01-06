@@ -1,19 +1,49 @@
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <!-- External Libraries -->
         <script src="https://d3js.org/d3.v5.js"></script>
-        <!-- Internal Libraries and -->
-        <script src="components/chart.js"></script>
         <!-- CSS -->
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     </head>
     <body>
-        <div class="card">
-            <div class="container">
-                <h4><b>John Doe</b></h4>
-                <p>Architect & Engineer</p>
-                <div id="chart"></div>
+        <div class="row">
+            <div class="column">
+                <div class="card">
+                    <div id="revenue"></div>
+                    <!-- Internal Dependencies and -->
+                </div>
+            </div>
+            <div class="column">
+                <div class="card">
+                    <!-- <h><b>John Doe</b></h4>
+                    <p>Architect & Engineer</p> -->
+                    <div id="impressions"></div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="card">
+                    <!-- <h><b>John Doe</b></h4>
+                    <p>Architect & Engineer</p> -->
+                    <div id="visits"></div>
+                </div>
             </div>
         </div>
     </body>
 </html>
+<!-- Internal Dependencies -->
+<script src="models/data.js"></script>
+<script src="components/donut.js"></script>
+<script>
+    // var ids = document.querySelectorAll('*[id]');
+    var allElements = document.getElementsByTagName('*');
+    var allIds = [];
+    for (var i = 0, n = allElements.length; i < n; ++i) {
+        var el = allElements[i];
+        if (el.id) {
+            allIds.push(el.id);
+        }
+    }
+    console.log('ids', allIds);
+    allIds.map(id => renderDonut(id));
+</script>
