@@ -22,8 +22,10 @@ var data = (type) => {
                 total: 200000,
                 colors: ['#8EC353', '#4B6332'],
                 values: [{
+                  color: '#8EC353',
                   value: 80000
                 }, {
+                  color: '#4B6332',
                   value: 120000
                 }]
             }
@@ -34,8 +36,10 @@ var data = (type) => {
                 total: 50000000,
                 colors: ['#ABDFE9', '#2E4955'],
                 values: [{
+                  color: '#ABDFE9',
                   value: 30000000
                 }, {
+                  color: '#2E4955',
                   value: 20000000
                 }]
               }
@@ -47,8 +51,10 @@ var data = (type) => {
                 total: 600000000,
                 colors: ['#D1C223', '#A75227'],
                 values: [{
+                  color: '#D1C223',
                   value: 120000000
                 }, {
+                  color: '#A75227',
                   value: 480000000
                 }]
             }

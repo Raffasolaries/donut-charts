@@ -6,7 +6,11 @@ var donutHoleRadius = totalRadius * 0.15
 var renderDonut = (type) => {
   console.log('we are in donut', data(type));
 
-  // var color = d3.scaleOrdinal(d3.schemeCategory10);
+  var formatDot = d3.format('s')
+  var formatEuro = d3.format('$')
+  d3.formatLocale({
+    currency: ['', '€']
+  })
   var color = d3.scaleOrdinal().domain(data(type).values)
     .range(data(type).colors)
 
@@ -29,14 +33,53 @@ var renderDonut = (type) => {
     .attr('d', arc)
     .attr('fill', (d, i) => color(d.value))
 
-  svg
-    .append('tspan')
-    .attr('x', 0)
-    .attr('dy', '1.3em')
-    .text((d, i) => {
+  svg.append('text')
+	   .attr('text-anchor', 'middle')
+		 .attr('font-size', '1.1em')
+		 .attr('y', -7)
+     .text(type.toUpperCase())
+     .style('fill', '#cdcdcd')
+
+  // var amount = '<p>'+data(type).total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')+'&euro;</p>';
+  var amount = type === 'revenue' ? formatEuro(data(type).total).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') : data(type).total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+
+  svg.append('text')
+	   .attr('text-anchor', 'middle')
+		 .attr('font-size', '1.4em')
+     .attr('y', 22)
+     .text(amount)
+
+  
+     //.html('<p>'+data(type).total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')+'&euro;</p>')
+  // if (type === 'revenue') svg.html('&euro;')
+	   // .text(data(type).total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')+'€');
+  
+  /* svg
+    .append('text').text(type.toUpperCase())
+    .attr({
+      x: (width - type.toUpperCase().length) / 2,
+      y: (height / 2,
+      dy: height / 2,
+      'text-anchor': 'middle',
+      'dominant-baseline': 'middle',
+      'pointer-events': 'none'
+    }) */
+
+    /* svg
+      .append('text').text(data(type).total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')+'€')
+      .attr({
+        x: (width - type.toUpperCase().length) / 2,
+        y: height /2,
+        dy: 10,
+        'text-anchor': 'middle',
+        'dominant-baseline': 'middle',
+        'pointer-events': 'none'
+      }) */
+    //.style('fill', fill)
+    /* .text((d, i) => {
         return type.toUpperCase()
         return data(type).total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')+'€'
-    })
+    }) */
 
   /* var legendItemSize = 18
   var legendSpacing = 4

@@ -11,7 +11,16 @@
             <div class="column">
                 <div class="card">
                     <div id="revenue"></div>
-                    <!-- Internal Dependencies and -->
+                    <div class="row">
+                        <div class="column">
+                            <div id="tablet-title-revenue">Tablet</div>
+                            <div class="legend" id="tablet-legend-revenue"></div>
+                        </div>
+                        <div class="column right">
+                            <div id="smartphone-title-revenue">Smartphone</div>
+                            <div class="legend" id="smartphone-legend-revenue"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="column">
@@ -40,10 +49,51 @@
     var allIds = [];
     for (var i = 0, n = allElements.length; i < n; ++i) {
         var el = allElements[i];
-        if (el.id) {
+        var colors = [];
+        var currentId = '';
+        console.log('element', el)
+        if (el.id && ['revenue', 'impressions', 'visits'].indexOf(el.id) > -1) {
             allIds.push(el.id);
+            colors = data(el.id).colors
+            currentId = el.id
+            console.log('current id', currentId, colors)
         }
+        if (el.id.includes('tablet-title') && el.id.includes(currentId)) {
+            document.getElementById(el.id).style.color = colors[0]
+        }
+        if (el.id.includes('smartphone-title') && el.id.includes(currentId)) {
+            document.getElementById(el.id).style.color = colors[1]
+        }
+        
     }
     console.log('ids', allIds);
-    allIds.map(id => renderDonut(id));
+    
+    /* document.getElementById('tablet-title-'+id).style.color = data(id).colors[0]
+    document.getElementById('smartphone-title-'+id).style.color = data(id).colors[1] */
+    allIds.map(id => {
+        var oMaster = document.getElementById(id), oChild;
+        for(i = 0; i < oMaster.childNodes.length; i++) {
+            console.log('childnodes', oMaster.childNodes)
+            oChild = oMaster.childNodes[i];
+            if(oChild.nodeName == 'INPUT') {
+                alert(oChild.id);
+            }
+        }
+        /* var tabletLegend = document.getElementById('tablet-legend-'+id)
+        var smartphoneLegend = document.getElementById('smartphone-legend-'+id)
+        data(id).values.map((item, i) => {
+            console.log(Math.round((item.value/data(id).total)*100))
+            if (i === 0) {
+                tabletLegend.textContent = Math.round((item.value/data(id).total)*100)+'%'
+            }
+            if (i === 1) {
+                smartphoneLegend.textContent = Math.round((item.value/data(id).total)*100)+'%'
+            }
+        }) */
+        renderDonut(id)
+        
+        
+    });
+
+
 </script>
