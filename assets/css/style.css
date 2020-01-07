@@ -45,10 +45,11 @@ body {
 .legend {
     font-size: 12px;
     font-family: sans-serif;
-    rect {
-        stroke-width: 2;
-    }
-    text {
-        fill: lightcyan;
-    }
+}
+
+.lengend rect {
+    stroke-width: 2;
+}
+.legend text {
+    fill: black;
 }
