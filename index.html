@@ -46,31 +46,94 @@
 <script>
     // var ids = document.querySelectorAll('*[id]');
     var allElements = document.getElementsByTagName('*');
-    var allIds = [];
-    for (var i = 0, n = allElements.length; i < n; ++i) {
-        var el = allElements[i];
-        var colors = [];
-        var currentId = '';
-        console.log('element', el)
-        if (el.id && ['revenue', 'impressions', 'visits'].indexOf(el.id) > -1) {
-            allIds.push(el.id);
-            colors = data(el.id).colors
-            currentId = el.id
-            console.log('current id', currentId, colors)
+    var ids = [];
+    var render = (ids) => {
+        for (let i=0; i<ids.length; i++) {
+            var item = ids[i]
+            document.getElementById(item.tabletTitle).style.color = item.tabletColor
+            document.getElementById(item.smartphoneTitle).style.color = item.smartphoneColor
         }
-        if (el.id.includes('tablet-title') && el.id.includes(currentId)) {
+    } 
+    for (let i = 0, n = allElements.length; i < n; ++i) {
+        var el = allElements[i];
+        // console.log('element', el)
+        let idObj = {}
+        if (el.id && (el.id.includes('revenue') || el.id.includes('impressions') || el.id.includes('visits'))) {
+            if (['revenue', 'impressions', 'visits'].indexOf(el.id) > -1) {
+                idObj = {
+                    id: el.id,
+                    colors: data(el.id).colors,
+                    tabletTitle: 'tablet-title-'+el.id,
+                    smartphoneTitle: 'smartphone-title-'+el.id,
+                    tabletLegend: 'tablet-legend-'+el.id,
+                    smartphoneLegend: 'smartphone-legend-'+el.id,
+                    tabletColor: data(el.id).colors[0],
+                    smartphoneColor: data(el.id).colors[1],
+                    value1: data(el.id).values[0].value,
+                    value2: data(el.id).values[1].value,
+                    percentage1: Math.round((data(el.id).values[0].value/data(el.id).total)*100)+'%',
+                    percentage2: Math.round((data(el.id).values[1].value/data(el.id).total)*100)+'%'
+                }
+            }
+            if (idObj.id) {
+
+            }
+            ids.push({
+                id: el.id,
+                colors: data(el.id).colors,
+                tabletTitle: 'tablet-title-'+el.id,
+                smartphoneTitle: 'smartphone-title-'+el.id,
+                tabletLegend: 'tablet-legend-'+el.id,
+                smartphoneLegend: 'smartphone-legend-'+el.id,
+                tabletColor: data(el.id).colors[0],
+                smartphoneColor: data(el.id).colors[1],
+                value1: data(el.id).values[0].value,
+                value2: data(el.id).values[1].value,
+                percentage1: Math.round((data(el.id).values[0].value/data(el.id).total)*100)+'%',
+                percentage2: Math.round((data(el.id).values[1].value/data(el.id).total)*100)+'%'
+            });
+        }
+        
+        /* if (el.id && el.id.includes('tablet-title') && el.id.includes(currentId)) {
+            console.log('logging id', el.id)
+            console.log('contains?', el.id.includes('tablet-title') && el.id.includes(currentId))
+            document.getElementById(el.id).style.color = colors[0]
+        } */
+        /* if (el.id.includes('tablet-title') && el.id.includes(currentId)) {
             document.getElementById(el.id).style.color = colors[0]
         }
         if (el.id.includes('smartphone-title') && el.id.includes(currentId)) {
             document.getElementById(el.id).style.color = colors[1]
-        }
+        } */
         
     }
-    console.log('ids', allIds);
+    console.log('ids', ids);
+    /* document.addEventListener('DOMContentLoaded', () => {
+        alert('DOM ready to go!')
+        setTimeout(() => {
+            render(ids)
+        }, 1000)
+    }) */
+    window.onload = () => {
+        for (let i=0; i<ids.length; i++) {
+            var item = ids[i]
+            console.log(document.getElementById(item.tabletTitle).innerHTML)
+            renderDonut(item.id)
+        }
+
+            
+            // document.getElementById(item.tabletTitle).style.color = item.tabletColor
+            // document.getElementById(item.smartphoneTitle).style.color = item.smartphoneColor
+    }
     
+
+    /* ids.map(id => {
+        document.getElementById(id.tabletTitle).style.color = id.tabletColor
+
+    }) */
     /* document.getElementById('tablet-title-'+id).style.color = data(id).colors[0]
     document.getElementById('smartphone-title-'+id).style.color = data(id).colors[1] */
-    allIds.map(id => {
+    /* allIds.map(id => {
         var oMaster = document.getElementById(id), oChild;
         for(i = 0; i < oMaster.childNodes.length; i++) {
             console.log('childnodes', oMaster.childNodes)
@@ -78,7 +141,7 @@
             if(oChild.nodeName == 'INPUT') {
                 alert(oChild.id);
             }
-        }
+        } */
         /* var tabletLegend = document.getElementById('tablet-legend-'+id)
         var smartphoneLegend = document.getElementById('smartphone-legend-'+id)
         data(id).values.map((item, i) => {
@@ -90,10 +153,9 @@
                 smartphoneLegend.textContent = Math.round((item.value/data(id).total)*100)+'%'
             }
         }) */
-        renderDonut(id)
         
         
-    });
+    // });
 
 
 </script>
