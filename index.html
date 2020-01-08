@@ -14,27 +14,43 @@
                     <div class="row">
                         <div class="column">
                             <div id="tablet-title-revenue">Tablet</div>
-                            <div class="legend" id="tablet-legend-revenue"></div>
+                            <div id="tablet-details-revenue"></div>
                         </div>
                         <div class="column right">
                             <div id="smartphone-title-revenue">Smartphone</div>
-                            <div class="legend" id="smartphone-legend-revenue"></div>
+                            <div id="smartphone-details-revenue"></div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="column">
                 <div class="card">
-                    <!-- <h><b>John Doe</b></h4>
-                    <p>Architect & Engineer</p> -->
                     <div id="impressions"></div>
+                    <div class="row">
+                        <div class="column">
+                            <div id="tablet-title-impressions">Tablet</div>
+                            <div id="tablet-details-impressions"></div>
+                        </div>
+                        <div class="column right">
+                            <div id="smartphone-title-impressions">Smartphone</div>
+                            <div id="smartphone-details-impressions"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="column">
                 <div class="card">
-                    <!-- <h><b>John Doe</b></h4>
-                    <p>Architect & Engineer</p> -->
                     <div id="visits"></div>
+                    <div class="row">
+                        <div class="column">
+                            <div id="tablet-title-visits">Tablet</div>
+                            <div id="tablet-details-visits"></div>
+                        </div>
+                        <div class="column right">
+                            <div id="smartphone-title-visits">Smartphone</div>
+                            <div id="smartphone-details-visits"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -44,118 +60,56 @@
 <script src="models/data.js"></script>
 <script src="components/donut.js"></script>
 <script>
-    // var ids = document.querySelectorAll('*[id]');
-    var allElements = document.getElementsByTagName('*');
-    var ids = [];
-    var render = (ids) => {
-        for (let i=0; i<ids.length; i++) {
-            var item = ids[i]
-            document.getElementById(item.tabletTitle).style.color = item.tabletColor
-            document.getElementById(item.smartphoneTitle).style.color = item.smartphoneColor
-        }
-    } 
-    for (let i = 0, n = allElements.length; i < n; ++i) {
-        var el = allElements[i];
-        // console.log('element', el)
-        let idObj = {}
-        if (el.id && (el.id.includes('revenue') || el.id.includes('impressions') || el.id.includes('visits'))) {
-            if (['revenue', 'impressions', 'visits'].indexOf(el.id) > -1) {
-                idObj = {
-                    id: el.id,
-                    colors: data(el.id).colors,
-                    tabletTitle: 'tablet-title-'+el.id,
-                    smartphoneTitle: 'smartphone-title-'+el.id,
-                    tabletLegend: 'tablet-legend-'+el.id,
-                    smartphoneLegend: 'smartphone-legend-'+el.id,
-                    tabletColor: data(el.id).colors[0],
-                    smartphoneColor: data(el.id).colors[1],
-                    value1: data(el.id).values[0].value,
-                    value2: data(el.id).values[1].value,
-                    percentage1: Math.round((data(el.id).values[0].value/data(el.id).total)*100)+'%',
-                    percentage2: Math.round((data(el.id).values[1].value/data(el.id).total)*100)+'%'
+    window.onload = () => {
+        var allElements = document.getElementsByTagName('*');
+        for (let i=0; i<types.length; i++) {
+            var itemId = types[i]
+            /* var idObj = {
+                id: itemId,
+                colors: data(itemId).colors,
+                tabletTitle: 'tablet-title-'+itemId,
+                smartphoneTitle: 'smartphone-title-'+itemId,
+                tabletLegend: 'tablet-legend-'+itemId,
+                smartphoneLegend: 'smartphone-legend-'+itemId,
+                tabletColor: data(itemId).colors[0],
+                smartphoneColor: data(itemId).colors[1],
+                value1: data(itemId).values[0].value,
+                value2: data(itemId).values[1].value,
+                percentage1: Math.round((data(itemId).values[0].value/data(itemId).total)*100)+'%',
+                percentage2: Math.round((data(itemId).values[1].value/data(itemId).total)*100)+'%'
+            } */
+            //console.log(document.getElementById(idObj.id))
+            // for (let i = 0, n = allElements.length; i < n; ++i) {
+            for (let i = 0; i < allElements.length; i++) {
+                var el = allElements[i];
+                if (el.id && (el.id.includes('-revenue') || el.id.includes('-impressions') || el.id.includes('-visits'))) {
+                    switch (true) {
+                        case el.id.includes('tablet-title') && el.id.includes(itemId): {
+                            document.getElementById(el.id).style.color = data(itemId).colors[0]
+                            document.getElementById(el.id).style.fontSize = 'large'
+                            break
+                        }
+                        case el.id.includes('smartphone-title') && el.id.includes(itemId): {
+                            document.getElementById(el.id).style.color = data(itemId).colors[1]
+                            document.getElementById(el.id).style.fontSize = 'large'
+                            break
+                        }
+                        case el.id.includes('tablet-details') && el.id.includes(itemId): {
+                            document.getElementById(el.id).innerHTML = itemId === 'revenue' ?
+                                '<p class="percentage">'+Math.round((data(itemId).values[1].value/data(itemId).total)*100)+'%&nbsp;&nbsp;<span class="value">'+data(itemId).values[1].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')+'&nbsp;&euro;</span></p>'
+                                : '<p class="percentage">'+Math.round((data(itemId).values[1].value/data(itemId).total)*100)+'%&nbsp;&nbsp;<span class="value">'+data(itemId).values[1].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')+'</span></p>'
+                            break
+                        }
+                        case el.id.includes('smartphone-details') && el.id.includes(itemId): {
+                            document.getElementById(el.id).innerHTML = itemId === 'revenue' ?
+                                '<p class="percentage">'+Math.round((data(itemId).values[0].value/data(itemId).total)*100)+'%&nbsp;&nbsp;<span class="value">'+data(itemId).values[0].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')+'&nbsp;&euro;</span></p>'
+                                : '<p class="percentage">'+Math.round((data(itemId).values[0].value/data(itemId).total)*100)+'%&nbsp;&nbsp;<span class="value">'+data(itemId).values[0].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')+'</span></p>'
+                            break
+                        }
+                    }
                 }
             }
-            if (idObj.id) {
-
-            }
-            ids.push({
-                id: el.id,
-                colors: data(el.id).colors,
-                tabletTitle: 'tablet-title-'+el.id,
-                smartphoneTitle: 'smartphone-title-'+el.id,
-                tabletLegend: 'tablet-legend-'+el.id,
-                smartphoneLegend: 'smartphone-legend-'+el.id,
-                tabletColor: data(el.id).colors[0],
-                smartphoneColor: data(el.id).colors[1],
-                value1: data(el.id).values[0].value,
-                value2: data(el.id).values[1].value,
-                percentage1: Math.round((data(el.id).values[0].value/data(el.id).total)*100)+'%',
-                percentage2: Math.round((data(el.id).values[1].value/data(el.id).total)*100)+'%'
-            });
+            renderDonut(itemId)
         }
-        
-        /* if (el.id && el.id.includes('tablet-title') && el.id.includes(currentId)) {
-            console.log('logging id', el.id)
-            console.log('contains?', el.id.includes('tablet-title') && el.id.includes(currentId))
-            document.getElementById(el.id).style.color = colors[0]
-        } */
-        /* if (el.id.includes('tablet-title') && el.id.includes(currentId)) {
-            document.getElementById(el.id).style.color = colors[0]
-        }
-        if (el.id.includes('smartphone-title') && el.id.includes(currentId)) {
-            document.getElementById(el.id).style.color = colors[1]
-        } */
-        
     }
-    console.log('ids', ids);
-    /* document.addEventListener('DOMContentLoaded', () => {
-        alert('DOM ready to go!')
-        setTimeout(() => {
-            render(ids)
-        }, 1000)
-    }) */
-    window.onload = () => {
-        for (let i=0; i<ids.length; i++) {
-            var item = ids[i]
-            console.log(document.getElementById(item.tabletTitle).innerHTML)
-            renderDonut(item.id)
-        }
-
-            
-            // document.getElementById(item.tabletTitle).style.color = item.tabletColor
-            // document.getElementById(item.smartphoneTitle).style.color = item.smartphoneColor
-    }
-    
-
-    /* ids.map(id => {
-        document.getElementById(id.tabletTitle).style.color = id.tabletColor
-
-    }) */
-    /* document.getElementById('tablet-title-'+id).style.color = data(id).colors[0]
-    document.getElementById('smartphone-title-'+id).style.color = data(id).colors[1] */
-    /* allIds.map(id => {
-        var oMaster = document.getElementById(id), oChild;
-        for(i = 0; i < oMaster.childNodes.length; i++) {
-            console.log('childnodes', oMaster.childNodes)
-            oChild = oMaster.childNodes[i];
-            if(oChild.nodeName == 'INPUT') {
-                alert(oChild.id);
-            }
-        } */
-        /* var tabletLegend = document.getElementById('tablet-legend-'+id)
-        var smartphoneLegend = document.getElementById('smartphone-legend-'+id)
-        data(id).values.map((item, i) => {
-            console.log(Math.round((item.value/data(id).total)*100))
-            if (i === 0) {
-                tabletLegend.textContent = Math.round((item.value/data(id).total)*100)+'%'
-            }
-            if (i === 1) {
-                smartphoneLegend.textContent = Math.round((item.value/data(id).total)*100)+'%'
-            }
-        }) */
-        
-        
-    // });
-
-
 </script>
