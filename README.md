@@ -5,4 +5,4 @@ D3 Donut Charts test
 index.html
 
 ## Testing
-launch spec-runner.html
+spec-runner.html
